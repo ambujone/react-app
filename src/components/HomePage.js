@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Main() {
+function HomePage() {
   return (
     <main className="App-main">
       <section className="hero-section">
@@ -10,7 +10,7 @@ function Main() {
         <p>We are a family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.</p>
         <Link to="/booking" className="reserve-button">Reserve a Table</Link>
       </section>
-
+      
       <section className="specials-section">
         <div className="section-header">
           <h2>This week's specials!</h2>
@@ -20,14 +20,14 @@ function Main() {
           {/* Specials cards would go here */}
         </div>
       </section>
-
+      
       <section className="testimonials-section">
         <h2>Testimonials</h2>
         <div className="testimonials-container">
           {/* Testimonial cards would go here */}
         </div>
       </section>
-
+      
       <section className="about-section">
         <div className="about-content">
           <h2>Little Lemon</h2>
@@ -42,4 +42,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default HomePage;
