@@ -116,12 +116,13 @@ function BookingForm({ availableTimes, dispatch }) {
 
   return (
     <form
-      style={{ display: 'grid', maxWidth: '400px', gap: '20px' }}
+      className="booking-form"
       onSubmit={handleSubmit}
       aria-labelledby="booking-form-title"
       noValidate
     >
       <h2 id="booking-form-title">Reserve a Table</h2>
+      <p className="form-description">Please fill out the form below to book your table at Little Lemon.</p>
 
       <div className="form-group">
         <label htmlFor="res-date">Choose date</label>
@@ -209,21 +210,23 @@ function BookingForm({ availableTimes, dispatch }) {
           <p>Your table has been reserved. Thank you for choosing Little Lemon!</p>
           <button
             type="button"
-            className="reserve-button"
+            className="reserve-button secondary-button"
             onClick={() => setFormSubmitted(false)}
             aria-label="Make Another Reservation"
           >
+            <span className="button-icon">➕</span>
             Make Another Reservation
           </button>
         </div>
       ) : (
         <button
           type="submit"
-          className="reserve-button"
+          className="reserve-button primary-button"
           disabled={!formValid}
           aria-label="Submit reservation"
           aria-disabled={!formValid}
         >
+          <span className="button-icon">📅</span>
           Make Your Reservation
         </button>
       )}

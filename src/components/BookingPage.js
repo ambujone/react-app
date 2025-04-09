@@ -50,7 +50,7 @@ function BookingPage() {
     <div className="booking-page">
       <div className="booking-hero">
         <h1>Reserve a Table</h1>
-        <p>We look forward to serving you at Little Lemon. Please fill out the form below to make a reservation.</p>
+        <p>We look forward to serving you at Little Lemon. Please fill out the form below to make a reservation and enjoy our Mediterranean cuisine in a warm, welcoming atmosphere.</p>
       </div>
 
       <div className="booking-container">
@@ -58,10 +58,28 @@ function BookingPage() {
 
         <div className="booking-info">
           <h3>Reservation Information</h3>
-          <p>Reservations are available up to 30 days in advance.</p>
-          <p>For parties larger than 10, please call us directly at (123) 456-7890.</p>
-          <p>A credit card is not required to hold your reservation.</p>
-          <p>If you need to cancel or modify your reservation, please do so at least 24 hours in advance.</p>
+          <p>At Little Lemon, we strive to provide an exceptional dining experience. Here's what you need to know about our reservation policy:</p>
+
+          <ul>
+            <li>Reservations are available up to 30 days in advance</li>
+            <li>For parties larger than 10, please call us directly</li>
+            <li>No credit card required to hold your reservation</li>
+            <li>Please cancel or modify at least 24 hours in advance</li>
+            <li>We hold reservations for 15 minutes past the booking time</li>
+          </ul>
+
+          <div className="contact-info">
+            <h4>Need assistance?</h4>
+            <p>Call us at: <a href="tel:+11234567890">(123) 456-7890</a></p>
+            <p>Email: <a href="mailto:reservations@littlelemon.com">reservations@littlelemon.com</a></p>
+          </div>
+
+          <div className="hours-info">
+            <h4>Hours of Operation</h4>
+            <p><strong>Lunch:</strong> 11:30 AM - 2:30 PM (Mon-Fri)</p>
+            <p><strong>Dinner:</strong> 5:00 PM - 10:00 PM (Mon-Sun)</p>
+            <p><strong>Brunch:</strong> 10:00 AM - 3:00 PM (Sat-Sun)</p>
+          </div>
         </div>
       </div>
     </div>

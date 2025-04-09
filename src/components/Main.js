@@ -8,13 +8,19 @@ function Main() {
         <h2 id="hero-heading">Little Lemon</h2>
         <h3>Chicago</h3>
         <p>We are a family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.</p>
-        <Link to="/booking" className="reserve-button" aria-label="Reserve a Table Button">Reserve a Table</Link>
+        <Link to="/booking" className="reserve-button" aria-label="Reserve a Table Button">
+          <span className="button-icon">📅</span>
+          Reserve a Table
+        </Link>
       </section>
 
       <section className="specials-section" aria-labelledby="specials-heading">
         <div className="section-header">
           <h2 id="specials-heading">This week's specials!</h2>
-          <button className="menu-button" aria-label="View Online Menu">Online Menu</button>
+          <button className="menu-button" aria-label="View Online Menu">
+            <span className="button-icon">📜</span>
+            Online Menu
+          </button>
         </div>
         <div className="specials-cards" role="list" aria-label="Special Menu Items">
           {/* Specials cards would go here */}
