@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import BookingForm from './BookingForm';
 
 // Initialize times function - returns the initial available times
-const initializeTimes = () => {
+export const initializeTimes = () => {
   return [
     '17:00',
     '18:00',
@@ -14,7 +14,7 @@ const initializeTimes = () => {
 };
 
 // Reducer function to update available times based on the selected date
-const updateTimes = (state, action) => {
+export const updateTimes = (state, action) => {
   switch(action.type) {
     case 'UPDATE_TIMES':
       // In a real application, this would fetch available times from an API based on the date
