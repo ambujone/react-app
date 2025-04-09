@@ -7,6 +7,63 @@ function BookingForm({ availableTimes, dispatch }) {
   const [guests, setGuests] = useState(1);
   const [occasion, setOccasion] = useState('');
 
+  // Form validation states
+  const [dateError, setDateError] = useState('');
+  const [timeError, setTimeError] = useState('');
+  const [guestsError, setGuestsError] = useState('');
+  const [formValid, setFormValid] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+
+  // Validate the form whenever inputs change
+  React.useEffect(() => {
+    validateForm();
+  }, [date, time, guests]);
+
+  // Validate the entire form
+  const validateForm = () => {
+    let isValid = true;
+
+    // Date validation
+    if (!date) {
+      setDateError('Please select a date');
+      isValid = false;
+    } else {
+      const selectedDate = new Date(date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      if (selectedDate < today) {
+        setDateError('Please select a future date');
+        isValid = false;
+      } else {
+        setDateError('');
+      }
+    }
+
+    // Time validation
+    if (!time) {
+      setTimeError('Please select a time');
+      isValid = false;
+    } else {
+      setTimeError('');
+    }
+
+    // Guests validation
+    if (guests < 1) {
+      setGuestsError('Number of guests must be at least 1');
+      isValid = false;
+    } else if (guests > 10) {
+      setGuestsError('Number of guests cannot exceed 10');
+      isValid = false;
+    } else {
+      setGuestsError('');
+    }
+
+    setFormValid(isValid);
+    return isValid;
+  };
+
   const handleDateChange = (e) => {
     const newDate = e.target.value;
     setDate(newDate);
@@ -14,11 +71,14 @@ function BookingForm({ availableTimes, dispatch }) {
     dispatch({ type: 'UPDATE_TIMES', date: newDate });
   };
 
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState(null);
-
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validate form before submission
+    const isValid = validateForm();
+    if (!isValid) {
+      return; // Don't proceed if form is invalid
+    }
 
     // Create form data object
     const formData = {
@@ -40,6 +100,11 @@ function BookingForm({ availableTimes, dispatch }) {
         setTime('');
         setGuests(1);
         setOccasion('');
+        // Reset validation states
+        setDateError('');
+        setTimeError('');
+        setGuestsError('');
+        setSubmitError(null);
       } else {
         setSubmitError('Booking submission failed. Please try again.');
       }
@@ -61,7 +126,11 @@ function BookingForm({ availableTimes, dispatch }) {
           value={date}
           onChange={handleDateChange}
           required
+          min={new Date().toISOString().split('T')[0]} // Prevent past dates
+          aria-label="Reservation date"
+          className={dateError ? 'input-error' : ''}
         />
+        {dateError && <div className="error-text">{dateError}</div>}
       </div>
 
       <div className="form-group">
@@ -71,12 +140,15 @@ function BookingForm({ availableTimes, dispatch }) {
           value={time}
           onChange={(e) => setTime(e.target.value)}
           required
+          aria-label="Reservation time"
+          className={timeError ? 'input-error' : ''}
         >
           <option value="">Select a time</option>
           {availableTimes && availableTimes.map(timeOption => (
             <option key={timeOption}>{timeOption}</option>
           ))}
         </select>
+        {timeError && <div className="error-text">{timeError}</div>}
       </div>
 
       <div className="form-group">
@@ -87,9 +159,14 @@ function BookingForm({ availableTimes, dispatch }) {
           min="1"
           max="10"
           value={guests}
-          onChange={(e) => setGuests(parseInt(e.target.value))}
+          onChange={(e) => setGuests(parseInt(e.target.value) || 1)}
           required
+          aria-label="Number of guests"
+          step="1"
+          title="Please enter a number between 1 and 10"
+          className={guestsError ? 'input-error' : ''}
         />
+        {guestsError && <div className="error-text">{guestsError}</div>}
       </div>
 
       <div className="form-group">
@@ -98,6 +175,7 @@ function BookingForm({ availableTimes, dispatch }) {
           id="occasion"
           value={occasion}
           onChange={(e) => setOccasion(e.target.value)}
+          aria-label="Occasion"
         >
           <option value="">Select an occasion (optional)</option>
           <option value="Birthday">Birthday</option>
@@ -122,7 +200,14 @@ function BookingForm({ availableTimes, dispatch }) {
           </button>
         </div>
       ) : (
-        <button type="submit" className="reserve-button">Make Your Reservation</button>
+        <button
+          type="submit"
+          className="reserve-button"
+          disabled={!formValid}
+          aria-label="Submit reservation"
+        >
+          Make Your Reservation
+        </button>
       )}
     </form>
   );
