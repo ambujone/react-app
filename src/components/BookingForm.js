@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { submitBooking } from '../utils/api';
 
 function BookingForm({ availableTimes, dispatch }) {
   const [date, setDate] = useState('');
@@ -13,10 +14,39 @@ function BookingForm({ availableTimes, dispatch }) {
     dispatch({ type: 'UPDATE_TIMES', date: newDate });
   };
 
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', { date, time, guests, occasion });
-    // Here you would typically send the data to an API
+
+    // Create form data object
+    const formData = {
+      date,
+      time,
+      guests,
+      occasion
+    };
+
+    console.log('Form submitted:', formData);
+
+    // Submit form data to the API
+    try {
+      const success = submitBooking(formData);
+      if (success) {
+        setFormSubmitted(true);
+        // Reset form fields
+        setDate('');
+        setTime('');
+        setGuests(1);
+        setOccasion('');
+      } else {
+        setSubmitError('Booking submission failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting booking:', error);
+      setSubmitError('An error occurred while submitting your booking. Please try again.');
+    }
   };
 
   return (
@@ -77,7 +107,23 @@ function BookingForm({ availableTimes, dispatch }) {
         </select>
       </div>
 
-      <button type="submit" className="reserve-button">Make Your Reservation</button>
+      {submitError && <div className="error-message">{submitError}</div>}
+
+      {formSubmitted ? (
+        <div className="success-message">
+          <h3>Reservation Confirmed!</h3>
+          <p>Your table has been reserved. Thank you for choosing Little Lemon!</p>
+          <button
+            type="button"
+            className="reserve-button"
+            onClick={() => setFormSubmitted(false)}
+          >
+            Make Another Reservation
+          </button>
+        </div>
+      ) : (
+        <button type="submit" className="reserve-button">Make Your Reservation</button>
+      )}
     </form>
   );
 }

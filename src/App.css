@@ -157,6 +157,31 @@ body {
   max-width: 600px;
 }
 
+/* Form Success and Error Messages */
+.success-message {
+  background-color: #e0f2e9;
+  border: 1px solid #4caf50;
+  color: #2e7d32;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.success-message h3 {
+  margin-top: 0;
+  color: #2e7d32;
+}
+
+.error-message {
+  background-color: #ffebee;
+  border: 1px solid #f44336;
+  color: #c62828;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
 /* Booking Page Styles */
 .booking-page {
   max-width: 1200px;

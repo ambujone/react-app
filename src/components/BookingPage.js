@@ -1,41 +1,39 @@
 import React, { useReducer } from 'react';
 import BookingForm from './BookingForm';
+import { fetchAvailableTimes } from '../utils/api';
 
-// Initialize times function - returns the initial available times
+// Initialize times function - returns the initial available times for today's date
 export const initializeTimes = () => {
-  return [
-    '17:00',
-    '18:00',
-    '19:00',
-    '20:00',
-    '21:00',
-    '22:00'
-  ];
+  // Get today's date in the format YYYY-MM-DD
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  const dateString = `${year}-${month}-${day}`;
+
+  // Fetch available times for today
+  try {
+    return fetchAvailableTimes(dateString);
+  } catch (error) {
+    console.error('Error fetching initial times:', error);
+    return ['17:00', '18:00', '19:00', '20:00', '21:00'];
+  }
 };
 
 // Reducer function to update available times based on the selected date
 export const updateTimes = (state, action) => {
   switch(action.type) {
     case 'UPDATE_TIMES':
-      // In a real application, this would fetch available times from an API based on the date
+      // Fetch available times from the API based on the selected date
       console.log('Selected date:', action.date);
 
-      // Simulate different available times based on the day of the week
       if (action.date) {
-        const date = new Date(action.date);
-        const dayOfWeek = date.getDay();
-
-        // Weekend (Friday, Saturday) has more evening slots
-        if (dayOfWeek === 5 || dayOfWeek === 6) {
-          return ['17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'];
-        }
-        // Monday has fewer slots (restaurant closes earlier)
-        else if (dayOfWeek === 1) {
-          return ['17:00', '18:00', '19:00', '20:00'];
-        }
-        // Other days have standard hours
-        else {
-          return ['17:00', '18:00', '19:00', '20:00', '21:00'];
+        try {
+          // Use the fetchAPI function to get available times for the selected date
+          return fetchAvailableTimes(action.date);
+        } catch (error) {
+          console.error('Error fetching available times:', error);
+          return state;
         }
       }
       return state;
