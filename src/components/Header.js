@@ -3,10 +3,12 @@ import logo from '../logo.svg';
 
 function Header() {
   return (
-    <header className="App-header">
+    <header className="App-header" role="banner">
       <div className="header-content">
         <div className="logo-container">
-          <img src={logo} className="App-logo" alt="Little Lemon Logo" />
+          <a href="/" aria-label="Little Lemon Home">
+            <img src={logo} className="App-logo" alt="Little Lemon Logo" />
+          </a>
         </div>
         <div className="header-text">
           <h1>Little Lemon</h1>

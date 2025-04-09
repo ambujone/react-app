@@ -157,6 +157,19 @@ body {
   max-width: 600px;
 }
 
+/* Accessibility Styles */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 /* Form Validation Styles */
 .input-error {
   border: 2px solid #f44336 !important;

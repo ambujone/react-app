@@ -115,32 +115,43 @@ function BookingForm({ availableTimes, dispatch }) {
   };
 
   return (
-    <form style={{ display: 'grid', maxWidth: '400px', gap: '20px' }} onSubmit={handleSubmit}>
-      <h2>Reserve a Table</h2>
+    <form
+      style={{ display: 'grid', maxWidth: '400px', gap: '20px' }}
+      onSubmit={handleSubmit}
+      aria-labelledby="booking-form-title"
+      noValidate
+    >
+      <h2 id="booking-form-title">Reserve a Table</h2>
 
       <div className="form-group">
         <label htmlFor="res-date">Choose date</label>
         <input
           type="date"
           id="res-date"
+          name="res-date"
           value={date}
           onChange={handleDateChange}
           required
           min={new Date().toISOString().split('T')[0]} // Prevent past dates
-          aria-label="Reservation date"
+          aria-required="true"
+          aria-invalid={dateError ? 'true' : 'false'}
+          aria-describedby={dateError ? 'date-error' : undefined}
           className={dateError ? 'input-error' : ''}
         />
-        {dateError && <div className="error-text">{dateError}</div>}
+        {dateError && <div className="error-text" id="date-error" role="alert">{dateError}</div>}
       </div>
 
       <div className="form-group">
         <label htmlFor="res-time">Choose time</label>
         <select
           id="res-time"
+          name="res-time"
           value={time}
           onChange={(e) => setTime(e.target.value)}
           required
-          aria-label="Reservation time"
+          aria-required="true"
+          aria-invalid={timeError ? 'true' : 'false'}
+          aria-describedby={timeError ? 'time-error' : undefined}
           className={timeError ? 'input-error' : ''}
         >
           <option value="">Select a time</option>
@@ -148,7 +159,7 @@ function BookingForm({ availableTimes, dispatch }) {
             <option key={timeOption}>{timeOption}</option>
           ))}
         </select>
-        {timeError && <div className="error-text">{timeError}</div>}
+        {timeError && <div className="error-text" id="time-error" role="alert">{timeError}</div>}
       </div>
 
       <div className="form-group">
@@ -156,26 +167,30 @@ function BookingForm({ availableTimes, dispatch }) {
         <input
           type="number"
           id="guests"
+          name="guests"
           min="1"
           max="10"
           value={guests}
           onChange={(e) => setGuests(parseInt(e.target.value) || 1)}
           required
-          aria-label="Number of guests"
+          aria-required="true"
+          aria-invalid={guestsError ? 'true' : 'false'}
+          aria-describedby={guestsError ? 'guests-error' : undefined}
           step="1"
           title="Please enter a number between 1 and 10"
           className={guestsError ? 'input-error' : ''}
         />
-        {guestsError && <div className="error-text">{guestsError}</div>}
+        {guestsError && <div className="error-text" id="guests-error" role="alert">{guestsError}</div>}
       </div>
 
       <div className="form-group">
         <label htmlFor="occasion">Occasion</label>
         <select
           id="occasion"
+          name="occasion"
           value={occasion}
           onChange={(e) => setOccasion(e.target.value)}
-          aria-label="Occasion"
+          aria-describedby="occasion-description"
         >
           <option value="">Select an occasion (optional)</option>
           <option value="Birthday">Birthday</option>
@@ -183,18 +198,20 @@ function BookingForm({ availableTimes, dispatch }) {
           <option value="Business">Business</option>
           <option value="Other">Other</option>
         </select>
+        <div id="occasion-description" className="sr-only">This field is optional</div>
       </div>
 
-      {submitError && <div className="error-message">{submitError}</div>}
+      {submitError && <div className="error-message" role="alert">{submitError}</div>}
 
       {formSubmitted ? (
-        <div className="success-message">
+        <div className="success-message" role="status">
           <h3>Reservation Confirmed!</h3>
           <p>Your table has been reserved. Thank you for choosing Little Lemon!</p>
           <button
             type="button"
             className="reserve-button"
             onClick={() => setFormSubmitted(false)}
+            aria-label="Make Another Reservation"
           >
             Make Another Reservation
           </button>
@@ -205,6 +222,7 @@ function BookingForm({ availableTimes, dispatch }) {
           className="reserve-button"
           disabled={!formValid}
           aria-label="Submit reservation"
+          aria-disabled={!formValid}
         >
           Make Your Reservation
         </button>
